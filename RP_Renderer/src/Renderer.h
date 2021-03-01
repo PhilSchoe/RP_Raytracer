@@ -15,5 +15,5 @@ public:
 
 private:
 	glm::vec3 color( const Ray& ray );
-	bool      hitSphere( const glm::vec3& sphereCenter, float sphereRadius, const Ray& ray );
+	float     hitSphere( const glm::vec3& sphereCenter, float sphereRadius, const Ray& ray );
 };

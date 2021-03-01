@@ -42,21 +42,32 @@ void Renderer::renderImage( int width, int height, float* outputImage )
 
 glm::vec3 Renderer::color( const Ray& ray )
 {
-    if( hitSphere( glm::vec3( 0.0f, 0.0f, -1.0f ), 0.5f, ray ) )
+    glm::vec3 sphereCenter( 0.0f, 0.0f, -1.0f );
+
+    float t = hitSphere( sphereCenter, 0.5f, ray );
+    if( t > 0.0f )
     {
-        return glm::vec3( 1.0f, 0.0f, 0.0f );
+        // Ray hit sphere
+        glm::vec3 hitpoint = ray.getPointAtParameter( t );
+        glm::vec3 normal   = glm::normalize( hitpoint - sphereCenter );
+
+        return 0.5f * glm::vec3( normal.x + 1.0f, normal.y + 1.0f, normal.z + 1.0f );
     }
 
+    // Ray misses sphere
     glm::vec3 unitDirection = glm::normalize( ray.getDirection() );
-    float t = 0.5f * ( unitDirection.y + 1.0f );
+    t = 0.5f * ( unitDirection.y + 1.0f );
 
     return ( 1.0f - t ) * glm::vec3( 1.0f ) + t * glm::vec3( 0.5f, 0.7f, 1.0f );
 }
 
 
-bool Renderer::hitSphere( const glm::vec3& sphereCenter, const float sphereRadius, const Ray& ray )
+float Renderer::hitSphere( const glm::vec3& sphereCenter, const float sphereRadius, const Ray& ray )
 {
-    // Basic sphere intersection: Calculate the discriminant and check if larger 0 --> at least one intersection
+    // Basic sphere intersection: Calculate the discriminant. If larger 0, calculate one solution.
+    // Discriminant < 0 --> No intersection.
+    // Discriminant = 0 --> One solution.
+    // Discriminant > 0 --> Two solutions
     glm::vec3 centerToOrigin = ray.getOrigin() - sphereCenter;
 
     float a = glm::dot( ray.getDirection(), ray.getDirection() );
@@ -64,6 +75,13 @@ bool Renderer::hitSphere( const glm::vec3& sphereCenter, const float sphereRadiu
     float c = glm::dot( centerToOrigin, centerToOrigin ) - sphereRadius * sphereRadius;
 
     float discriminant = b * b - 4.0f * a * c;
-    
-    return (discriminant > 0.0f);
+
+    if( discriminant < 0.0f )
+    {
+        return -1.0f;
+    }
+    else
+    {
+        return ( -b - sqrt(discriminant) ) / (2.0f * a);
+    }
 }
