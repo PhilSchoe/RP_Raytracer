@@ -1,7 +1,8 @@
 #include "glm/geometric.hpp"
 #include "Renderer.h"
+#include "Camera.h"
 #include "Sphere.h"
-#include "RP_Constants.h"
+#include "RP_Utility.h"
 
 
 Renderer::Renderer()
@@ -16,12 +17,10 @@ void Renderer::renderImage( int width, int height, float* outputImage )
 {
     // Camera
 
-    glm::vec3 lowerLeftCorner( -2.0f, -1.0f, -1.0f );
-    glm::vec3 horizontal( 4.0f, 0.0f, 0.0f );
-    glm::vec3 vertical( 0.0f, 2.0f, 0.0f );
-    glm::vec3 origin( 0.0f );
+    Camera camera( width, height );
 
     // World
+
     HitableList world;
     this->createWorld( &world );
 
@@ -34,15 +33,15 @@ void Renderer::renderImage( int width, int height, float* outputImage )
 
     for( int j = height - 1; j >= 0; j-- )
     {
-        for( int i = 0; i < stride; i += 3 )
+        for( int i = 0; i < stride / 3; i++ )
         {
-            float u = float( i / 3.0f ) / float( width );
+            float u = float( i ) / float( width );
             float v = float( j ) / float( height );
 
-            Ray ray( origin, lowerLeftCorner + u * horizontal + v * vertical );
+            Ray ray       = camera.getRay( u, v );
             glm::vec3 col = color( ray, world );
             
-            int index = i + j * stride;
+            int index = i * 3 + j * stride;
 
             outputImage[index]     = col.r;
             outputImage[index + 1] = col.g;
