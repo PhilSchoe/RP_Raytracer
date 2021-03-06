@@ -13,4 +13,4 @@
 #include <vector>
 
 
-extern "C" RPRENDERER_API void renderImage( int width, int height, float* outputImage );
+extern "C" RPRENDERER_API void renderImage( int width, int height, int samplesPerPixel, float* outputImage );

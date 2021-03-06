@@ -13,7 +13,7 @@ Renderer::~Renderer()
 {}
 
 
-void Renderer::renderImage( int width, int height, float* outputImage )
+void Renderer::renderImage( int width, int height, int samplesPerPixel, float* outputImage )
 {
     // Camera
 
@@ -35,17 +35,22 @@ void Renderer::renderImage( int width, int height, float* outputImage )
     {
         for( int i = 0; i < stride / 3; i++ )
         {
-            float u = float( i ) / float( width );
-            float v = float( j ) / float( height );
+            glm::vec3 pixelColor( 0.0f );
+            for( int s = 0; s < samplesPerPixel; s++ )
+            {
+                float u = ( i + randomFloat() ) / float( width  - 1 );
+                float v = ( j + randomFloat() ) / float( height - 1 );
 
-            Ray ray       = camera.getRay( u, v );
-            glm::vec3 col = color( ray, world );
-            
+                Ray ray     = camera.getRay( u, v );
+                pixelColor += color( ray, world );
+            }
+            pixelColor /= samplesPerPixel;
+
             int index = i * 3 + j * stride;
 
-            outputImage[index]     = col.r;
-            outputImage[index + 1] = col.g;
-            outputImage[index + 2] = col.b;
+            outputImage[index]     = pixelColor.r;
+            outputImage[index + 1] = pixelColor.g;
+            outputImage[index + 2] = pixelColor.b;
         }
     }
 }

@@ -5,8 +5,8 @@
 #include "Renderer.h"
 
 
-RPRENDERER_API void renderImage( int width, int height, float* outputImage )
+RPRENDERER_API void renderImage( int width, int height, int samplesPerPixel, float* outputImage )
 {
     Renderer renderer;
-    renderer.renderImage( width, height, outputImage );
+    renderer.renderImage( width, height, samplesPerPixel, outputImage );
 }

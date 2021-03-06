@@ -42,9 +42,11 @@ int main()
     const int height = 100;
     const int size   = width * height * 3;
 
+    const int samplesPerPixel = 100;
+
     float* image = new float[size];
 
-    renderImage( width, height, image );
+    renderImage( width, height, samplesPerPixel, image );
     writePPMFile( "output/Test.ppm", width, height, image );
 
     delete[] image;

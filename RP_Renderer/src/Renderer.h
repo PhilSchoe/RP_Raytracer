@@ -12,7 +12,7 @@ public:
 	Renderer();
 	~Renderer();
 
-	void renderImage( int width, int height, float* outputImage );
+	void renderImage( int width, int height, int samplesPerPixel, float* outputImage );
 
 private:
 	glm::vec3 color( const Ray& ray, const Hitable& world );
