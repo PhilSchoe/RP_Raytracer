@@ -15,6 +15,6 @@ public:
 	void renderImage( int width, int height, int samplesPerPixel, float* outputImage );
 
 private:
-	glm::vec3 color( const Ray& ray, const Hitable& world );
+	glm::vec3 color( const Ray& ray, const Hitable& world, int depth );
 	void      createWorld( HitableList* world );
 };

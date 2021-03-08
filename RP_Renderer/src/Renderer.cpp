@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Sphere.h"
 #include "RP_Utility.h"
+#include "Vec3Util.h"
 
 
 Renderer::Renderer()
@@ -28,6 +29,7 @@ void Renderer::renderImage( int width, int height, int samplesPerPixel, float* o
 
     const int size   = width * height * 3;
     const int stride = width * 3;
+    const int maxDepth = 50;
 
     // Render
 
@@ -42,7 +44,7 @@ void Renderer::renderImage( int width, int height, int samplesPerPixel, float* o
                 float v = ( j + randomFloat() ) / float( height - 1 );
 
                 Ray ray     = camera.getRay( u, v );
-                pixelColor += color( ray, world );
+                pixelColor += color( ray, world, maxDepth );
             }
             pixelColor /= samplesPerPixel;
 
@@ -56,13 +58,20 @@ void Renderer::renderImage( int width, int height, int samplesPerPixel, float* o
 }
 
 
-glm::vec3 Renderer::color( const Ray& ray, const Hitable& world )
+glm::vec3 Renderer::color( const Ray& ray, const Hitable& world, int depth )
 {
     HitRecord record;
+
+    if( depth <= 0 )
+    {
+        return glm::vec3( 0.0f );
+    }
+
     if( world.hit( ray, 0.0f, RP_INFINITY, record ) )
     {
         // Ray hit something in the world
-        return 0.5f * ( record.normal + glm::vec3(1.0f) );
+        glm::vec3 target = record.hitPosition + record.normal + randomInUnitSphere();
+        return 0.5f * color( Ray( record.hitPosition, target - record.hitPosition ), world, depth - 1 );
     }
 
     // Ray does not hit anything (background)
