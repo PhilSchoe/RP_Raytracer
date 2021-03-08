@@ -22,9 +22,11 @@ void writePPMFile( const std::string filename, const int width, const int height
         {
             int index = i + j * width * 3;
 
-            int red   = int( 255.99f * data[index] );
-            int green = int( 255.99f * data[index + 1] );
-            int blue  = int( 255.99f * data[index + 2] );
+            float gamma = 1.0f / 2.2f;
+
+            int red   = int( 255.99f * pow(data[index],     gamma) );
+            int green = int( 255.99f * pow(data[index + 1], gamma) );
+            int blue  = int( 255.99f * pow(data[index + 2], gamma) );
 
             outputFile << red << " " << green << " " << blue << "\n";
         }
