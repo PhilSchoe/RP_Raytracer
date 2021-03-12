@@ -70,7 +70,7 @@ glm::vec3 Renderer::color( const Ray& ray, const Hitable& world, int depth )
     if( world.hit( ray, 0.001f, RP_INFINITY, record ) )
     {
         // Ray hit something in the world
-        glm::vec3 target = record.hitPosition + record.normal + randomInUnitSphere();
+        glm::vec3 target = record.hitPosition + record.normal + randomUnitVector();
         return 0.5f * color( Ray( record.hitPosition, target - record.hitPosition ), world, depth - 1 );
     }
 

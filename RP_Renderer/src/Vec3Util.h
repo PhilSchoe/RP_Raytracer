@@ -7,19 +7,19 @@
 
 inline static glm::vec3 randomVec3()
 {
-    // Returns a vector3 with coordinates in [0; 1)
+    // Returns a random vector3 with coordinates in [0; 1)
     return glm::vec3( randomFloat(), randomFloat(), randomFloat() );
 }
 
 
 inline static glm::vec3 randomVec3( float min, float max )
 {
-    // Returns a vector3 with coordinates in [min; max)
+    // Returns a random vector3 with coordinates in [min; max)
     return glm::vec3( randomFloat(min, max), randomFloat(min, max), randomFloat(min, max) );
 }
 
 
-static glm::vec3 randomInUnitSphere()
+inline glm::vec3 randomInUnitSphere()
 {
     while( true )
     {
@@ -31,4 +31,10 @@ static glm::vec3 randomInUnitSphere()
 
         return position;
     }
+}
+
+
+inline glm::vec3 randomUnitVector()
+{
+    return glm::normalize( randomInUnitSphere() );
 }
