@@ -1,7 +1,12 @@
 #pragma once
+#include <memory>
+
 #include "glm/vec3.hpp"
 #include "glm/geometric.hpp"
 #include "Ray.h"
+
+
+class Material;
 
 
 struct HitRecord
@@ -9,6 +14,7 @@ struct HitRecord
     float t;
     glm::vec3 hitPosition;
     glm::vec3 normal;
+    std::shared_ptr<Material> p_material;
     bool frontFace;
 
     inline void setFaceNormal( const Ray& ray, const glm::vec3& outwardNormal )

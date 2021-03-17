@@ -9,9 +9,10 @@ Sphere::Sphere() :
 {}
 
 
-Sphere::Sphere( const glm::vec3& center, float radius ) :
+Sphere::Sphere( const glm::vec3& center, float radius, std::shared_ptr<Material> p_material ) :
     m_Center( center ),
-    m_Radius( radius )
+    m_Radius( radius ),
+    m_p_Material( p_material )
 {}
 
 
@@ -69,4 +70,6 @@ void Sphere::storeHitRecord( const float t, const Ray& ray, HitRecord& record ) 
 
     glm::vec3 outwardNormal = ( record.hitPosition - m_Center ) / m_Radius;
     record.setFaceNormal( ray, outwardNormal );
+
+    record.p_material = this->m_p_Material;
 }

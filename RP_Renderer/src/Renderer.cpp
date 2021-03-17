@@ -84,6 +84,6 @@ glm::vec3 Renderer::color( const Ray& ray, const Hitable& world, int depth )
 
 void Renderer::createWorld( HitableList* world )
 {
-    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, 0.0f, -1.0f ), 0.5f ) );
-    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, -100.5f, -1.0f ), 100.0f ) );
+    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, 0.0f, -1.0f ), 0.5f, nullptr ) );
+    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, -100.5f, -1.0f ), 100.0f, nullptr ) );
 }

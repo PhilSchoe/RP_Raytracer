@@ -6,7 +6,7 @@ class Sphere : public Hitable
 {
 public:
     Sphere();
-    Sphere( const glm::vec3& center, float radius );
+    Sphere( const glm::vec3& center, float radius, std::shared_ptr<Material> p_material );
     ~Sphere();
 
     virtual bool hit( const Ray& ray, float tMin, float tMax, HitRecord& record ) const override;
@@ -17,4 +17,6 @@ private:
 
     glm::vec3 m_Center;
     float     m_Radius;
+
+    std::shared_ptr<Material> m_p_Material;
 };

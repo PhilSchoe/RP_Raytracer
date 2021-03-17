@@ -1,5 +1,4 @@
 #pragma once
-
 #include "glm/vec3.hpp"
 #include "glm/gtx/norm.hpp"
 #include "RP_Utility.h"
