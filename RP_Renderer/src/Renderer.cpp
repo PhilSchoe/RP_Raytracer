@@ -4,6 +4,8 @@
 #include "Sphere.h"
 #include "RP_Utility.h"
 #include "Vec3Util.h"
+#include "Material.h"
+#include "LambertMaterial.h"
 
 
 Renderer::Renderer()
@@ -70,8 +72,15 @@ glm::vec3 Renderer::color( const Ray& ray, const Hitable& world, int depth )
     if( world.hit( ray, 0.001f, RP_INFINITY, record ) )
     {
         // Ray hit something in the world
-        glm::vec3 target = record.hitPosition + record.normal + randomUnitVector();
-        return 0.5f * color( Ray( record.hitPosition, target - record.hitPosition ), world, depth - 1 );
+        Ray scattered;
+        glm::vec3 attenuation;
+
+        if( record.p_material->scatter( ray, record, attenuation, scattered ) )
+        {
+            return attenuation * color( scattered, world, depth - 1 );
+        }
+
+        return glm::vec3( 0.0f );
     }
 
     // Ray does not hit anything (background)
@@ -84,6 +93,9 @@ glm::vec3 Renderer::color( const Ray& ray, const Hitable& world, int depth )
 
 void Renderer::createWorld( HitableList* world )
 {
-    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, 0.0f, -1.0f ), 0.5f, nullptr ) );
-    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, -100.5f, -1.0f ), 100.0f, nullptr ) );
+    std::shared_ptr<LambertMaterial> ground = std::make_shared<LambertMaterial>( glm::vec3(0.6f, 0.7f, 0.2f) );
+    std::shared_ptr<LambertMaterial> sphere = std::make_shared<LambertMaterial>( glm::vec3(0.3f, 0.5f, 0.8f) );
+
+    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, 0.0f, -1.0f ), 0.5f, sphere ) );
+    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, -100.5f, -1.0f ), 100.0f, ground ) );
 }

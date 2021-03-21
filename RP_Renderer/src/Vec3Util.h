@@ -37,3 +37,11 @@ inline glm::vec3 randomUnitVector()
 {
     return glm::normalize( randomInUnitSphere() );
 }
+
+
+inline bool nearZero( const glm::vec3& vector )
+{
+    // Return true if the vector is close to zero in all dimensions.
+    const auto s = 1e-8;
+    return( fabs(vector.x) < s && fabs(vector.y) < s && fabs(vector.z) < s );
+}
