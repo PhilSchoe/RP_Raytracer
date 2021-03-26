@@ -6,6 +6,7 @@
 #include "Vec3Util.h"
 #include "Material.h"
 #include "LambertMaterial.h"
+#include "MetalMaterial.h"
 
 
 Renderer::Renderer()
@@ -93,9 +94,13 @@ glm::vec3 Renderer::color( const Ray& ray, const Hitable& world, int depth )
 
 void Renderer::createWorld( HitableList* world )
 {
-    std::shared_ptr<LambertMaterial> ground = std::make_shared<LambertMaterial>( glm::vec3(0.6f, 0.7f, 0.2f) );
-    std::shared_ptr<LambertMaterial> sphere = std::make_shared<LambertMaterial>( glm::vec3(0.3f, 0.5f, 0.8f) );
+    auto materialGround = std::make_shared<LambertMaterial>( glm::vec3( 0.8f, 0.8f, 0.0f ) );
+    auto materialCenter = std::make_shared<LambertMaterial>( glm::vec3( 0.7f, 0.3f, 0.3f ) );
+    auto materialLeft   = std::make_shared<MetalMaterial>(   glm::vec3( 0.8f ) );
+    auto materialRight  = std::make_shared<MetalMaterial>(   glm::vec3( 0.8f, 0.6f, 0.2f ) );
 
-    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, 0.0f, -1.0f ), 0.5f, sphere ) );
-    world->add( std::make_shared<Sphere>( glm::vec3( 0.0f, -100.5f, -1.0f ), 100.0f, ground ) );
+    world->add( std::make_shared<Sphere>( glm::vec3(  0.0f, -100.5f, -1.0f ), 100.0f, materialGround ) );
+    world->add( std::make_shared<Sphere>( glm::vec3(  0.0f,    0.0f, -1.0f ),   0.5f, materialCenter ) );
+    world->add( std::make_shared<Sphere>( glm::vec3( -1.0f,    0.0f, -1.0f ),   0.5f, materialLeft )   );
+    world->add( std::make_shared<Sphere>( glm::vec3(  1.0f,    0.0f, -1.0f ),   0.5f, materialRight )  );
 }
