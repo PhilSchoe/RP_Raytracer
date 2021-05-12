@@ -2,10 +2,12 @@
 
 #include "MetalMaterial.h"
 #include "Hitable.h"
+#include "Vec3Util.h"
 
 
-MetalMaterial::MetalMaterial( const glm::vec3& albedo ) :
-    m_Albedo( albedo )
+MetalMaterial::MetalMaterial( const glm::vec3& albedo, const float fuzz ) :
+    m_Albedo( albedo ),
+    m_Fuzz( fuzz < 1.0f ? fuzz : 1.0f )
 {}
 
 
@@ -17,7 +19,7 @@ bool MetalMaterial::scatter( const Ray& rayIn, const HitRecord& record, glm::vec
 {
     glm::vec3 reflected = glm::reflect( glm::normalize(rayIn.getDirection()), record.normal );
 
-    scattered   = Ray( record.hitPosition, reflected );
+    scattered   = Ray( record.hitPosition, reflected + m_Fuzz * randomInUnitSphere() );
     attenuation = m_Albedo;
 
     return ( glm::dot(scattered.getDirection(), record.normal) > 0 );

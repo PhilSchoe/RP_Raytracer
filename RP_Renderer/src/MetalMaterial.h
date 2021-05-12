@@ -5,7 +5,7 @@
 class MetalMaterial : public Material
 {
 public:
-    MetalMaterial( const glm::vec3& albedo );
+    MetalMaterial( const glm::vec3& albedo, const float fuzz );
     ~MetalMaterial();
 
     virtual bool scatter( const Ray& rayIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered 
@@ -14,4 +14,5 @@ public:
 
 private:
     glm::vec3 m_Albedo;
+    float     m_Fuzz;
 };

@@ -96,8 +96,8 @@ void Renderer::createWorld( HitableList* world )
 {
     auto materialGround = std::make_shared<LambertMaterial>( glm::vec3( 0.8f, 0.8f, 0.0f ) );
     auto materialCenter = std::make_shared<LambertMaterial>( glm::vec3( 0.7f, 0.3f, 0.3f ) );
-    auto materialLeft   = std::make_shared<MetalMaterial>(   glm::vec3( 0.8f ) );
-    auto materialRight  = std::make_shared<MetalMaterial>(   glm::vec3( 0.8f, 0.6f, 0.2f ) );
+    auto materialLeft   = std::make_shared<MetalMaterial>(   glm::vec3( 0.8f ), 0.3f );
+    auto materialRight  = std::make_shared<MetalMaterial>(   glm::vec3( 0.8f, 0.6f, 0.2f ), 1.0f );
 
     world->add( std::make_shared<Sphere>( glm::vec3(  0.0f, -100.5f, -1.0f ), 100.0f, materialGround ) );
     world->add( std::make_shared<Sphere>( glm::vec3(  0.0f,    0.0f, -1.0f ),   0.5f, materialCenter ) );
